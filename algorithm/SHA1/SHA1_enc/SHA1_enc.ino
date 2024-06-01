@@ -8,14 +8,14 @@ void setup () {
   while (Serial.available() == 0) { ; }
   String msg = Serial.readString();
   
-  uint32_t hash[5];
+  uint32_t hash[5] = {};
   int ml = msg.length();
   char msgArray[ml+1];
   msg.toCharArray(msgArray, ml+1);
   ml *= 8;
   
   // generate the hmac
-  SimpleSHA1::generateSHA(msgArray, ml, hash);
+  SimpleSHA1::generateSHA((uint8_t*)msgArray, ml, hash);
 
   // print out the HMAC
   for (int i = 0; i < 5; i++) {

@@ -33,13 +33,13 @@ void bruteForce() {
       candidate[len] = '\0';
 
       String candidateString = String(candidate);
-      uint32_t hash[5];
+      uint32_t hash[5] = {};
       int ml = candidateString.length();
       char msgArray[ml + 1];
       candidateString.toCharArray(msgArray, ml + 1);
       ml *= 8;
       
-      SimpleSHA1::generateSHA(msgArray, ml, hash);
+      SimpleSHA1::generateSHA((uint8_t*)msgArray, ml, hash);
 
       String generatedHash = "";
       for (int i = 0; i < 5; i++) {
