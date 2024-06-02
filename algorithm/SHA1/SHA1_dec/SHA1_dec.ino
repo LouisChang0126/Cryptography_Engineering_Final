@@ -14,8 +14,12 @@ void setup() {
     targetHash.trim();
   }
 
+  Serial.print("Target SHA1 hash: ");
+  Serial.println(targetHash);
+
   Serial.println("Starting brute force...");
   bruteForce();
+  Serial.println("Done.");
 }
 
 void loop() {
