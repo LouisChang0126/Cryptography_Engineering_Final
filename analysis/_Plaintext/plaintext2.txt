@@ -1,0 +1,1 @@
+Abstract Civitas is the first electronic voting system that is coercion-resistant, universally and voter verifiable, and suitable for remote voting. This paper describes the design and implementation of Civitas. Assurance is established in the design throu
