@@ -8,8 +8,9 @@ AESLib aesLib;
 
 #define INPUT_BUFFER_LIMIT (128 + 1) // designed for Arduino UNO, not stress-tested anymore (this works with readBuffer[129])
 
-unsigned char cleartext[INPUT_BUFFER_LIMIT] = {0}; // THIS IS INPUT BUFFER (FOR TEXT)
+unsigned char plain_text[INPUT_BUFFER_LIMIT] = {0}; // THIS IS INPUT BUFFER (FOR TEXT)
 unsigned char ciphertext[2*INPUT_BUFFER_LIMIT] = {0}; // THIS IS OUTPUT BUFFER (FOR BASE64-ENCODED ENCRYPTED DATA)
+unsigned char cleartext[INPUT_BUFFER_LIMIT] = {0};
 
 unsigned char readBuffer[18] = "username:password";
 
@@ -42,8 +43,8 @@ uint16_t decrypt_to_cleartext(byte msg[], uint16_t msgLen, byte iv[]) {
 
 void setup() {
   Serial.begin(BAUD);
-  Serial.setTimeout(60000);
-  delay(2000);
+  //Serial.setTimeout(60000);
+  //delay(2000);
 
   aes_init(); // generate random IV, should be called only once? causes crash if repeated...
 
@@ -70,16 +71,20 @@ byte enc_iv_from[N_BLOCK] = { 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x
 
 void loop() {
 
+  while(!Serial){;}
   Serial.print("readBuffer length: "); Serial.println(sizeof(readBuffer));
-
    // must not exceed INPUT_BUFFER_LIMIT bytes; may contain a newline
-  sprintf((char*)cleartext, "%s", readBuffer);
+  while(Serial.available()==0){;}
+  //sprintf((char*)cleartext, "%s", readBuffer);
+  String input = Serial.readString();
+  Serial.print("input plaintext: "); Serial.println(input);
+  input.toCharArray((char*)readBuffer, INPUT_BUFFER_LIMIT);
 
   // Encrypt
   // iv_block gets written to, provide own fresh copy... so each iteration of encryption will be the same.
-  uint16_t msgLen = sizeof(readBuffer);
+  uint16_t msgLen = sizeof(plain_text);
   memcpy(enc_iv, enc_iv_to, sizeof(enc_iv_to));
-  uint16_t encLen = encrypt_to_ciphertext((char*)cleartext, msgLen, enc_iv);
+  uint16_t encLen = encrypt_to_ciphertext((char*)plain_text, msgLen, enc_iv);
   Serial.print("Encrypted length = "); Serial.println(encLen );
 
   Serial.println("Encrypted. Decrypting..."); Serial.println(encLen ); Serial.flush();
@@ -92,7 +97,7 @@ void loop() {
   Serial.print("Decrypted cleartext of length: "); Serial.println(decLen);
   Serial.print("Decrypted cleartext:\n"); Serial.println((char*)cleartext);
 
-  if (strcmp((char*)readBuffer, (char*)cleartext) == 0) {
+  if (strcmp((char*)plain_text, (char*)cleartext) == 0) {
     Serial.println("Decrypted correctly.");
   } else {
     Serial.println("Decryption test failed.");
