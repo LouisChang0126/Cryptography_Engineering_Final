@@ -79,15 +79,16 @@ void loop() {
   String input = Serial.readString();
   Serial.print("input plaintext: "); Serial.println(input);
   input.toCharArray((char*)readBuffer, INPUT_BUFFER_LIMIT);
-
+  unsigned long start = micros();
   // Encrypt
   // iv_block gets written to, provide own fresh copy... so each iteration of encryption will be the same.
   uint16_t msgLen = sizeof(plain_text);
   memcpy(enc_iv, enc_iv_to, sizeof(enc_iv_to));
   uint16_t encLen = encrypt_to_ciphertext((char*)plain_text, msgLen, enc_iv);
   Serial.print("Encrypted length = "); Serial.println(encLen );
-
-  Serial.println("Encrypted. Decrypting..."); Serial.println(encLen ); Serial.flush();
+  Serial.println();
+  Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
+  Serial.println("Decrypting..."); Serial.println(encLen ); Serial.flush();
   
   unsigned char base64decoded[50] = {0};
   base64_decode((char*)base64decoded, (char*)ciphertext, encLen);
@@ -102,6 +103,7 @@ void loop() {
   } else {
     Serial.println("Decryption test failed.");
   }
+  Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
 
   Serial.println("---");
 

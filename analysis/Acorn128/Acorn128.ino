@@ -36,7 +36,7 @@ void setup() {
     
     acorn.computeTag(tag, sizeof(tag));
     
-    Serial.print("Ciphertext: ");
+    /*Serial.print("Ciphertext: ");
     for (size_t i = 0; i < len; i++) {
         Serial.print(ciphertext[i], BIN);
     }
@@ -47,7 +47,7 @@ void setup() {
         Serial.print(tag[i], HEX);
         Serial.print(" ");
     }
-    Serial.println();
+    Serial.println();*/
     Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros");
     start = micros();
     
@@ -59,7 +59,7 @@ void setup() {
     
     bool tagValid = acorn.checkTag(tag, sizeof(tag));
     
-    if (tagValid) {
+    /*if (tagValid) {
         Serial.print("Decrypted text: ");
         for (size_t i = 0; i < len; i++) {
             Serial.print((char)decryptedtext[i]);
@@ -67,7 +67,7 @@ void setup() {
         Serial.println();
     } else {
         Serial.println("Tag verification failed!");
-    }
+    }*/
     Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
   }
 }

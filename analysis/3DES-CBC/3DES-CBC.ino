@@ -41,11 +41,6 @@ void loop() {
   ms = micros();
   des.calc_size_n_pad(sizeof(cyphertext));
   des.tdesCbcDecipher(cyphertext,plaintext_p);
-  bool ok = des.CheckPad(plaintext_p,sizeof(plaintext_p));
-  if (ok)
-    printf("padding ok!");
-  else
-    printf("padding corrupted!");
   printf(" Decryption took %lu micros\n\n",(micros() - ms));
   delay(2000);
 }
