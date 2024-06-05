@@ -36,12 +36,12 @@ void setup() {
     
     acorn.computeTag(tag, sizeof(tag));
     
-    /*Serial.print("Ciphertext: ");
+    Serial.print("Ciphertext: ");
     for (size_t i = 0; i < len; i++) {
         Serial.print(ciphertext[i], BIN);
     }
     Serial.println();
-    
+    /*
     Serial.print("Tag: ");
     for (size_t i = 0; i < sizeof(tag); i++) {
         Serial.print(tag[i], HEX);
