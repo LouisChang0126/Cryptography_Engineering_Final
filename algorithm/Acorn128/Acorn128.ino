@@ -17,9 +17,9 @@ void setup() {
   Serial.begin(9600);
   
   while (!Serial) { ; }
-  while (Serial.available() == 0) { ; }
 
   Serial.println("Enter plaintext:");
+  while (Serial.available() == 0) { ; }
   String input = Serial.readString();
   input.trim();
   size_t len = input.length();
