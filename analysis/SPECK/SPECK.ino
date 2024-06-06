@@ -10,26 +10,17 @@ const uint8_t key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
 uint8_t blockSize;
 
 #define STRING_LENGTH 256
-void generateRandomBytes(byte* buffer, size_t length) {
-  for (size_t i = 0; i < length; i++) {
-    buffer[i] = random(0, 256);
-  }
-}
-
 String get_random_string()
 {
-    randomSeed(analogRead(0));
-    byte randomBytes[STRING_LENGTH];
-    generateRandomBytes(randomBytes, STRING_LENGTH);
+    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const size_t charsetSize = sizeof(charset) - 1;
 
-    String hexString;
+    char randomString[STRING_LENGTH+1];
     for (size_t i = 0; i < STRING_LENGTH; i++) {
-      if (randomBytes[i] < 16) {
-        hexString += "0"; // Add leading zero for single digit hex numbers
-      }
-      hexString += String(randomBytes[i], HEX);
+        randomString[i] = charset[random(charsetSize)];
     }
-    return hexString;
+    randomString[STRING_LENGTH] = '\0';
+    return String(randomString);
 }
 
 void setup() {
