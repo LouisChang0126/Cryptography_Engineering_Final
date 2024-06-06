@@ -11,41 +11,39 @@ AESLib aesLib;
 
 void setup() {
   Serial.begin(9600);
-  while (!Serial) { ; }
-  
-  Serial.println("Enter plaintext:");
-  while (Serial.available() == 0) { ; }
-  String input = Serial.readString();
-  Serial.println(input);
-  input.trim();
-  size_t len = input.length();
-  if (len > 0) {
-    uint8_t plaintext[len + 1];
-    uint8_t ciphertext[len + 1];
-    uint8_t decryptedtext[len + 1];
-    input.getBytes(plaintext, len + 1);
-    
-    unsigned long start = micros();
-    uint8_t iv[BLOCK_SIZE];
-    aesLib.gen_iv(iv);
-    
-    aesLib.encrypt(plaintext, len + 1, ciphertext, key, KEY_LENGTH, iv);
-    
-    Serial.print("Ciphertext: ");
-    for (size_t i = 0; i < len+1 ; i++) {
-      Serial.print(ciphertext[i], BIN);
+  for(int t=0;t<100;t++)
+  {
+      String input = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
+      size_t len = input.length();
+      if (len > 0) {
+        uint8_t plaintext[len + 1];
+        uint8_t ciphertext[len + 1];
+        uint8_t decryptedtext[len + 1];
+        input.getBytes(plaintext, len + 1);
+        
+        unsigned long start = micros();
+        uint8_t iv[BLOCK_SIZE];
+        aesLib.gen_iv(iv);
+        
+        aesLib.encrypt(plaintext, len + 1, ciphertext, key, KEY_LENGTH, iv);
+        
+        /*Serial.print("Ciphertext: ");
+        for (size_t i = 0; i < len+1 ; i++) {
+          Serial.print(ciphertext[i], BIN);
+        }
+        Serial.println();*/
+        //Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
+        
+        aesLib.decrypt(ciphertext, len + 1, decryptedtext, key, KEY_LENGTH, iv);
+        
+        /*Serial.print("Decrypted text: ");
+        for (size_t i = 0; i < len+1 ; i++) {
+          Serial.print((char)decryptedtext[i]);
+        }*/
+        //Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
     }
-    Serial.println();
-    Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
-    
-    aesLib.decrypt(ciphertext, len + 1, decryptedtext, key, KEY_LENGTH, iv);
-    
-    /*Serial.print("Decrypted text: ");
-    for (size_t i = 0; i < len+1 ; i++) {
-      Serial.print((char)decryptedtext[i]);
-    }*/
-    Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
   }
+  Serial.println("Done");
 }
 
 void loop() {
