@@ -18,42 +18,21 @@ void generateRandomBytes(byte* buffer, size_t length) {
   }
 }
 
-String get_random_string()
-{
-    randomSeed(analogRead(0));
-    byte randomBytes[STRING_LENGTH];
-    generateRandomBytes(randomBytes, STRING_LENGTH);
-
-    String hexString;
-    for (size_t i = 0; i < STRING_LENGTH; i++) {
-      if (randomBytes[i] < 16) {
-        hexString += "0"; // Add leading zero for single digit hex numbers
-      }
-      hexString += String(randomBytes[i], HEX);
-    }
-    return hexString;
-}
-
 void setup() {
   Serial.begin(9600);
   
   for(int t=0;t<100;t++)
   {
-    Serial.println(t);
-    randomSeed(analogRead(0));
-    byte randomBytes[STRING_LENGTH];
-    generateRandomBytes(randomBytes, STRING_LENGTH);
+    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const size_t charsetSize = sizeof(charset) - 1;
 
-    String hexString;
+    char randomString[STRING_LENGTH+1];
     for (size_t i = 0; i < STRING_LENGTH; i++) {
-      if (randomBytes[i] < 16) {
-        hexString += "0"; // Add leading zero for single digit hex numbers
-      }
-      hexString += String(randomBytes[i], HEX);
+        randomString[i] = charset[random(charsetSize)];
     }
-    return hexString;
-    
-    String input = hexString;
+    randomString[STRING_LENGTH] = '\0';
+
+    String input = String(randomString);
     size_t len = input.length();
     uint8_t plaintext[len + 1];
     uint8_t ciphertext[len + 1];
