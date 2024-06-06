@@ -9,15 +9,38 @@ const uint8_t key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
 
 uint8_t blockSize;
 
+#define STRING_LENGTH 256
+void generateRandomBytes(byte* buffer, size_t length) {
+  for (size_t i = 0; i < length; i++) {
+    buffer[i] = random(0, 256);
+  }
+}
+
+String get_random_string()
+{
+    randomSeed(analogRead(0));
+    byte randomBytes[STRING_LENGTH];
+    generateRandomBytes(randomBytes, STRING_LENGTH);
+
+    String hexString;
+    for (size_t i = 0; i < STRING_LENGTH; i++) {
+      if (randomBytes[i] < 16) {
+        hexString += "0"; // Add leading zero for single digit hex numbers
+      }
+      hexString += String(randomBytes[i], HEX);
+    }
+    return hexString;
+}
+
 void setup() {
   Serial.begin(9600);
 
   speck.setKey(key, sizeof(key));
   blockSize = speck.blockSize();
 
-  for(int t=0;t<100;t++)
+  for(int t=0;t<10;t++)
   {
-    String input = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
+    String input = get_random_string();
     size_t len = input.length();
     if (len > 0) {
       uint8_t plaintext[len + 1];
