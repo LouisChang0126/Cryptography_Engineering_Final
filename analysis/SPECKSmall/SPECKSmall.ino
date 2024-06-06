@@ -9,15 +9,29 @@ const uint8_t key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
 
 uint8_t blockSize;
 
+#define STRING_LENGTH 256
+String get_random_string()
+{
+    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const size_t charsetSize = sizeof(charset) - 1;
+
+    char randomString[STRING_LENGTH+1];
+    for (size_t i = 0; i < STRING_LENGTH; i++) {
+        randomString[i] = charset[random(charsetSize)];
+    }
+    randomString[STRING_LENGTH] = '\0';
+    return String(randomString);
+}
+
 void setup() {
   Serial.begin(9600);
 
   speck.setKey(key, sizeof(key));
   blockSize = speck.blockSize();
 
-  for(int t=0;t<100;t++)
+  for(int t=0;t<10;t++)
   {
-    String input = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
+    String input = get_random_string();
     size_t len = input.length();
     if (len > 0) {
       uint8_t plaintext[len + 1];
