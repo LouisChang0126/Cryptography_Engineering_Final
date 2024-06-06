@@ -11,21 +11,13 @@ uint8_t blockSize;
 
 void setup() {
   Serial.begin(9600);
-  
-  while (!Serial) {
-    ; // Wait for Serial to connect
-  }
 
   speck.setKey(key, sizeof(key));
   blockSize = speck.blockSize();
-  
-  Serial.println("Please enter plaintext:");
-}
 
-void loop() {
-  if (Serial.available() > 0) {
-    String input = Serial.readString(); // Read plaintext from Serial input
-    input.trim(); // Remove leading and trailing whitespace
+  for(int t=0;t<100;t++)
+  {
+    String input = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
     size_t len = input.length();
     if (len > 0) {
       uint8_t plaintext[len + 1];
@@ -41,10 +33,11 @@ void loop() {
       
       /*Serial.print("Ciphertext: ");
       for (size_t i = 0; i < len; i++) {
-        Serial.print(ciphertext[i], BIN);
+        Serial.print(ciphertext[i], HEX);
+        Serial.print(" ");
       }
       Serial.println();*/
-      Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
+      //Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
       
       // Decrypt the ciphertext
       for (size_t i = 0; i < len; i += blockSize) {
@@ -56,7 +49,12 @@ void loop() {
         Serial.print((char)decryptedtext[i]);
       }
       Serial.println();*/
-      Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
+      //Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
     }
   }
+  Serial.println("Done");
+}
+
+void loop() {
+
 }
