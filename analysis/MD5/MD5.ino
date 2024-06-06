@@ -34,13 +34,14 @@ void setup()
   Serial.begin(9600);
   //give it a second
   delay(1000);
-  //generate the MD5 hash for our string
+  unsigned long start = micros();
   unsigned char* hash=MD5::make_hash("Abstract Two kinds of contemporary developments in cryptography are examined. Widening applications of teleprocessing have given rise to a need for new types of cryptographic systems, which minimize the need for secure key distribution channels and supply ");
   //generate the digest (hex encoding) of our hash
   char *md5str = MD5::make_digest(hash, 16);
   free(hash);
+  Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
   //print it on our serial monitor
-  Serial.println(hexToBin(md5str));
+  Serial.println(md5str);
   //Give the Memory back to the System if you run the md5 Hash generation in a loop
   free(md5str);
 }
