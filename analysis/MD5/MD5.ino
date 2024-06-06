@@ -4,6 +4,14 @@ This is en example of how to use my MD5 library. It provides two
 easy-to-use methods, one for generating the MD5 hash, and the second
 one to generate the hex encoding of the hash, which is frequently used.
 */
+#define STRING_LENGTH 256
+
+void generateRandomBytes(byte* buffer, size_t length) {
+  for (size_t i = 0; i < length; i++) {
+    buffer[i] = random(0, 256);
+  }
+}
+
 String hexToBin(String hex){
   String bin = "";
   for(int i = 0; i < hex.length(); i++){
@@ -35,8 +43,20 @@ void setup()
   //give it a second
   for(int t=0;t<100;t++)
   {
+      randomSeed(analogRead(0));
+      byte randomBytes[STRING_LENGTH];
+      generateRandomBytes(randomBytes, STRING_LENGTH);
+      
+      String hexString;
+      for (size_t i = 0; i < STRING_LENGTH; i++) {
+        if (randomBytes[i] < 16) {
+          hexString += "0"; // Add leading zero for single digit hex numbers
+        }
+        hexString += String(randomBytes[i], HEX);
+      }
+      
       unsigned long start = micros();
-      unsigned char* hash=MD5::make_hash("Abstract Two kinds of contemporary developments in cryptography are examined. Widening applications of teleprocessing have given rise to a need for new types of cryptographic systems, which minimize the need for secure key distribution channels and supply ");
+      unsigned char* hash=MD5::make_hash((unsigned char*)hexString.c_str());
       //generate the digest (hex encoding) of our hash
       char *md5str = MD5::make_digest(hash, 16);
       free(hash);
