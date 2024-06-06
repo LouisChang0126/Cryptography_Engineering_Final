@@ -21,7 +21,7 @@ void generateRandomBytes(byte* buffer, size_t length) {
 void setup() {
   Serial.begin(9600);
   
-  for(int t=0;t<100;t++)
+  for(int t=0;t<1;t++)
   {
     const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const size_t charsetSize = sizeof(charset) - 1;
@@ -47,9 +47,9 @@ void setup() {
     
     ascon.computeTag(tag, sizeof(tag));
     
-    /*Serial.print("Ciphertext: ");
+    Serial.print("Ciphertext: ");
     for (size_t i = 0; i < len; i++) {
-        Serial.print(ciphertext[i], HEX);
+        Serial.print(ciphertext[i], BIN);
     }
     Serial.println();
     
@@ -58,8 +58,8 @@ void setup() {
         Serial.print(tag[i], HEX);
         Serial.print(" ");
     }
-    Serial.println();*/
-    //Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros");
+    Serial.println();
+    Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros");
     
     ascon.clear();
     ascon.setKey(key, sizeof(key));
@@ -78,7 +78,7 @@ void setup() {
     } else {
         Serial.println("Tag verification failed!");
     }*/
-    //Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
+    Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
   }
   Serial.println("Done");
 }

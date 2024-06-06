@@ -37,7 +37,7 @@ void setup() {
       randomString[STRING_LENGTH] = '\0';
 
       des.init("012345677654321001234567\0",(unsigned long long int)0);
-      ms = micros();
+      unsigned long start = micros();
       des.iv_inc();
       byte* plaintext = (byte*)randomString;
       des.calc_size_n_pad(sizeof(plaintext));
@@ -48,11 +48,10 @@ void setup() {
       //printf("Ciphertext in binary: ");
       //printBinary(cyphertext, des.get_size());
       
-      //printf(" Encryption took %lu micros\n",(micros()  - ms));
-      ms = micros();
+      Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
       des.calc_size_n_pad(sizeof(cyphertext));
       des.tdesCbcDecipher(cyphertext,plaintext_p);
-      //printf(" Decryption took %lu micros\n\n",(micros() - ms));
+      Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros"); start = micros();
   }
   Serial.println("Done");
 }
