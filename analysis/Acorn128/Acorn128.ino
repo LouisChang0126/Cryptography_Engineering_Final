@@ -14,15 +14,10 @@ uint8_t tag[16];
 void setup() {
   Serial.begin(9600);
   
-  while (!Serial) { ; }
-
-  Serial.println("Enter plaintext:");
-  while (Serial.available() == 0) { ; }
-  String input = Serial.readString();
-  Serial.println(input);
-  input.trim();
+  String input = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
   size_t len = input.length();
-  if (len > 0) {
+  for(int t=0;t<100;t++)
+  {
     uint8_t plaintext[len + 1];
     uint8_t ciphertext[len + 1];
     uint8_t decryptedtext[len + 1];
@@ -48,8 +43,7 @@ void setup() {
         Serial.print(" ");
     }
     Serial.println();*/
-    Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros");
-    start = micros();
+    //Serial.print(" Encryption took "); Serial.print(micros()-start); Serial.println(" micros");
     
     acorn.clear();
     acorn.setKey(key, sizeof(key));
@@ -68,7 +62,7 @@ void setup() {
     } else {
         Serial.println("Tag verification failed!");
     }*/
-    Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
+    //Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
   }
 }
 
