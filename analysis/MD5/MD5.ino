@@ -46,6 +46,7 @@ void setup()
       //Give the Memory back to the System if you run the md5 Hash generation in a loop
       free(md5str);
   }
+  Serial.println("Done");
 }
 
 void loop()

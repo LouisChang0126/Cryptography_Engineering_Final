@@ -64,6 +64,7 @@ void setup() {
     }*/
     //Serial.print(" Decryption took "); Serial.print(micros()-start); Serial.println(" micros");
   }
+  Serial.println("Done");
 }
 
 void loop() {
