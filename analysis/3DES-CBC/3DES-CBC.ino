@@ -3,6 +3,7 @@
 
 DES des;
 unsigned long ms;
+#define STRING_LENGTH 256
 
 void printBinary(byte *input, int length) {
   for (int i = 0; i < length; i++) {
@@ -15,20 +16,30 @@ void printBinary(byte *input, int length) {
 
 void setup() {
   Serial.begin(9600);
-  delay(100);
-  printf_begin();  
-  delay(100);  
+  //delay(100);
+  //printf_begin();  
+  //delay(100);  
 
   //printf("\n============================================\n");
   //printf(" Triple DES sample for Arduino/Raspberry pi\n");
   //printf("============================================\n");
 
-  for(int t=0;t<10;t++)
+  for(int t=0;t<100;t++)
   {
+      const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const size_t charsetSize = sizeof(charset) - 1;
+
+      char randomString[STRING_LENGTH+1];
+      for (size_t i = 0; i < STRING_LENGTH; i++) {
+          randomString[i] = charset[random(charsetSize)];
+      }
+      
+      randomString[STRING_LENGTH] = '\0';
+
       des.init("012345677654321001234567\0",(unsigned long long int)0);
       ms = micros();
       des.iv_inc();
-      byte plaintext[] = "Abstract We study the security of popular password managers and their policies on automatically filling in Web passwords. We examine browser built-in password managers, mobile password managers, and 3rd party managers. We observe significant differences in";
+      byte* plaintext = (byte*)randomString;
       des.calc_size_n_pad(sizeof(plaintext));
       byte plaintext_p[des.get_size()];
       des.padPlaintext(plaintext,plaintext_p);
